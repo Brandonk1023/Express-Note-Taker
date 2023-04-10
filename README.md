@@ -40,6 +40,8 @@ Georgeyoo:https://github.com/Georgeyoo
 UUID Documentation:
 https://www.geeksforgeeks.org/node-js-npm-uuid/#
 
+https://www.npmjs.com/package/uuid
+
 
 ## License
 
