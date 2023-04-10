@@ -1,5 +1,6 @@
 const fs = require('fs')
 const express = require('express')
+const {v4 : uuidv4} = require('uuid')
 const path = require('path')
 
 const app = express()
@@ -23,9 +24,8 @@ app.get('/api/notes', (req, res) => {
 })
 
 app.post('/api/notes', (req, res) => {
-    let newNote = req.body
-    le newNote.id = Math.floor(math.randon() * 1000 )
-    let notes = JSON.parse(fs.readFile('db/db.json', 'utf-8'))
+    let userNote = req.body
+    userNote.id = uuidv4()
 })
 
 app.listen(PORT, () => console.log("Listening on port " + PORT))
