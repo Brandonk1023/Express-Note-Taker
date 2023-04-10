@@ -24,6 +24,7 @@ app.get('/api/notes', (req, res) => {
 
 app.post('/api/notes', (req, res) => {
     let newNote = req.body
+    le newNote.id = Math.floor(math.randon() * 1000 )
     let notes = JSON.parse(fs.readFile('db/db.json', 'utf-8'))
 })
 
