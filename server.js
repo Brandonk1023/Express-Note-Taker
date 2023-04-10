@@ -9,3 +9,19 @@ const PORT = process.env.PORT || 3001
 app.use(express.static('public'))
 app.use(express.urlencoded({extended: true}))
 app.use(express.json())
+
+app.get('/notes', (req, res) => {
+
+})
+
+app.get('*', (req, res) => {
+
+})
+
+app.get('/api/notes', (req, res) => {
+
+})
+
+app.post('/api/notes', (req, res) => {
+    
+})
