@@ -23,5 +23,7 @@ app.get('/api/notes', (req, res) => {
 })
 
 app.post('/api/notes', (req, res) => {
-    
+
 })
+
+app.listen(PORT, () => console.log("Listening on port" + PORT))
