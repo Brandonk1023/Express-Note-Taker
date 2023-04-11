@@ -24,16 +24,19 @@ app.get('/api/notes', (req, res) => {
 })
 
 app.post('/api/notes', (req, res) => {
-    let savedNotes = JSON.parse(fs.readFile('db/db.json', "utf-8"))
-    let userNote = req.body
-    userNote.id = uuidv4()
+    fs.readFile('db/db.json', 'utf-8')
+    .then(data => {
+      let savedNotes = JSON.parse(data)
+      let userNote = req.body
+      userNote.id = uuidv4()
 
-    savedNotes.push(userNote)
+      savedNotes.push(userNote)
 
     fs.writeFile("./db/db.json", JSON.stringify(savedNotes))
 
     res.json(savedNotes)
 
+})
 })
 
 app.listen(PORT, () => console.log("Listening on port " + PORT))
