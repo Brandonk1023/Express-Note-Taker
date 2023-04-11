@@ -24,8 +24,12 @@ app.get('/api/notes', (req, res) => {
 })
 
 app.post('/api/notes', (req, res) => {
+    let savedNotes = JSON.parse(fs.readFile('db/db.json', "utf-8"))
     let userNote = req.body
     userNote.id = uuidv4()
+
+    savedNotes.push(userNote)
+
 })
 
 app.listen(PORT, () => console.log("Listening on port " + PORT))
