@@ -30,6 +30,10 @@ app.post('/api/notes', (req, res) => {
 
     savedNotes.push(userNote)
 
+    fs.writeFile("./db/db.json", JSON.stringify(savedNotes))
+
+    res.json(savedNotes)
+
 })
 
 app.listen(PORT, () => console.log("Listening on port " + PORT))
