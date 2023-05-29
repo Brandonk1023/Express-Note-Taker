@@ -3,10 +3,11 @@ const express = require('express')
 const {v4 : uuidv4} = require('uuid')
 const path = require('path')
 const noteList = require('./db/db.json')
-const app = express()('body-parser')
+const app = express()
+const bodyParser = require('body-parser')
 const PORT = process.env.PORT || 3001
 
-app.use()
+app.use(bodyParser.json({ extended: false}))
 
 //middleware for public
 app.use(express.static('public'))
