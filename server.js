@@ -1,54 +1,65 @@
-const fs = require('fs')
-const express = require('express')
-const {v4 : uuidv4} = require('uuid')
-const path = require('path')
-const noteList = require('./db/db.json')
-const app = express()
-const bodyParser = require('body-parser')
-const PORT = process.env.PORT || 3001
+//require express
+const express = require('express');
+const bodyParser = require('body-parser');
+const noteList = require('./db/db.json');
+const fs = require('fs');
+const path = require('path');
+const crypto = require('crypto');
 
-app.use(bodyParser.json({ extended: false}))
+//set port
+const PORT = process.env.PORT || 3001;
+
+const app = express();
+app.use(bodyParser.json({ extended: false }));
 
 //middleware for public
-app.use(express.static('public'))
-app.use(express.urlencoded({ extended: true }))
-app.use(express.json())
+app.use(express.static('public'));
 
+//route user to notes.html
+app.get('/notes', (req, res) =>
+    res.sendFile(path.join(__dirname, '/public/notes.html'))
+);
 
-//route to notes.html
-app.get('/notes', (req, res) => {
-    res.sendFile(path.join(__dirname, "/public/notes.html"))
-})
-
-
-app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, "public/index.html"))
-})
-
-//route gets notes from db.json
-app.get('/api/notes', (req, res) => {
-    fs.readFile('./db/db.json', 'utf8', (err) => {if (err) console.log(err)})
-    res.json(noteList)
-})
-
-//route post new note
 app.post('/api/notes', (req, res) => {
-    noteList.push(req.body)
-    fs.writeFile("./db/db.json", JSON.stringify(noteList), err => { if (err) console.log(err)})
+    noteList.push(req.body);
+    console.log(crypto.randomUUID())
+    fs.writeFile('./db/db.json', JSON.stringify(noteList), err => { if (err) console.log(err) });
 })
 
-// delete note
-app.delete("api/notes/:id", function (req, res) {
+// get notes
+app.get('/api/notes', (req, res) => {
+    fs.readFile('./db/db.json', 'utf-8', (err) => { if (err) console.log(err) });
+    res.json(noteList);
+});
+
+app.get('/api/notes/:id', function (req, res) {
     if (req.params.id) {
         const noteId = req.params.id;
-        for (let i = 0; i < noteList.length; i ++) {
+        for (let i = 0; i < noteList.length; i++) {
+            const currentNote = noteList[i];
             if (noteList[i].id === noteId) {
+                res.json(currentNote);
+                return;
+            }
+        }
+    }
+});
+// delete notes
+app.delete('/api/notes/:id', function (req, res) {
+    if (req.params.id) {
+        const noteId = req.params.id;
+        for (let i = 0; i < noteList.length; i++) {
+            if (noteList[i].id === noteId) {
+                console.log(noteList[i])
                 noteList.splice(i, 1)
             }
         }
     }
-    fs.writeFile('./db/db.json', JSON.stringify(notes), (err) => {console.log(err)})
-    res.json(`Deleted note ${req.params.id}`)
+    // update the db
+    fs.writeFile('./db/db.json', JSON.stringify(noteList), (err) => { console.log(err) });
+    res.json(`Deleted note ${req.params.id}`);
 })
-
-app.listen(PORT, () => console.log("Listening on port " + PORT))
+// listen() method is responsible for listening for incoming connections on the specified port 
+app.listen(PORT, () =>
+    console.log(`Example app listening at http://localhost:${PORT}`)
+);
