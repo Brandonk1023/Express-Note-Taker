@@ -3,8 +3,7 @@ const express = require('express')
 const {v4 : uuidv4} = require('uuid')
 const path = require('path')
 const noteList = require('./db/db.json')
-const app = express()
-const bodyParser = require('body-parser')
+const app = express()('body-parser')
 const PORT = process.env.PORT || 3001
 
 app.use()
@@ -34,11 +33,7 @@ app.get('/api/notes', (req, res) => {
 //route post new note
 app.post('/api/notes', (req, res) => {
     noteList.push(req.body)
-
-    fs.writeFile("./db/db.json", JSON.stringify(savedNotes))
-
-    res.json(savedNotes)
-
+    fs.writeFile("./db/db.json", JSON.stringify(noteList), err => { if (err) console.log(err)})
 })
 
 // delete note
@@ -53,6 +48,6 @@ app.delete("api/notes/:id", function (req, res) {
     }
     fs.writeFile('./db/db.json', JSON.stringify(notes), (err) => {console.log(err)})
     res.json(`Deleted note ${req.params.id}`)
-}
+})
 
 app.listen(PORT, () => console.log("Listening on port " + PORT))

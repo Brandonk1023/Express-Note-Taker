@@ -70,6 +70,7 @@ const handleNoteSave = () => {
   const newNote = {
     title: noteTitle.value,
     text: noteText.value,
+    id: crypto.randomUUID()
   };
   saveNote(newNote).then(() => {
     getAndRenderNotes();
